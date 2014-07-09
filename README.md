@@ -24,3 +24,10 @@ OpenStack GreenC: A Power-Aware Virtual Machine Scheduling Policy for OpenStack 
 
 - Restart service: service openstack-nova-scheduler restart
 - Check log: tail -f /var/log/nova/scheduler.log
+
+
+### Documentation
+
+http://docs.openstack.org/trunk/config-reference/content/section_compute-scheduler.html
+
+http://docs.openstack.org/openstack-ops/content/customize.html
