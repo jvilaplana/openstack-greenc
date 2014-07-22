@@ -41,37 +41,43 @@ def shutdown_host(username, ip):
 def startup_host(hwaddr):
     subprocess.call(["ssh", CONTROLLER_USER + '@' + CONTROLLER_IP, "wol " + hwaddr]);
 
+def list_servers():
+    return nova.servers.list()
+    #for server in servers:
+    #    print server.name + " - " + nova.hosts.get(server.hostId).host_name
+        #print dir(server)
 
-def main():
-    startup_host(HWaddr_C02)
-    #shutdown_host("root", PIP_C02)
-    
-    print "### SERVERS ###"
-    print nova.servers.list()
-
-    print "### FLAVORS ###"
+def list_flavors():
     print nova.flavors.list()
 
-    print "### HOSTS ###"
-    print nova.hosts.list()
+def list_hosts():
+    return nova.hosts.list()
+    #for host in hosts:
+    #    print host.host_name
 
-    host_list = nova.hosts.list()
+def list_servers_and_host():
+    servers = list_servers()
+    hosts = list_hosts()
 
-    #print dir(nova.hosts)
+    for server in servers:
+        server_host = ""
+        for host in hosts:
+            #print dir(host)
+            #print dir(server)
+            #print host.hostId
+            #print host.id
+            if host.human_id == server.hostId:
+                server_host = host.host_name
+                break
+        print server.name + " - " + server.hostId
 
-    #print dir(nova)
+def main():
+    #startup_host(HWaddr_C02)
+    #shutdown_host("root", PIP_C02)
+    
+    list_servers_and_host()
 
-    for host in host_list:
-        print "HOST:"
-        print host.host_name
-        if host.host_name == "stormyc04.udl.net":
-            pass
-            #host.shutdown
-            #nova.hosts.host_action(host, "shutdown")
-            #print dir(nova.hosts)
-            #nova.hosts.host_action(host.host_name, "shutdown")
-
-    #print nova.hosts.list()
+    
 
     # List all the availability zones
     #av_zones = nova.availability_zones.list()
