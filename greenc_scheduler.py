@@ -29,7 +29,7 @@ from nova.scheduler import driver
 CONF = cfg.CONF
 CONF.import_opt('compute_topic', 'nova.compute.rpcapi')
 LOG = logging.getLogger(__name__)
- 
+
 class GreenCScheduler(driver.Scheduler):
     """
     Implements Scheduler as a random node selector based on
