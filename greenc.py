@@ -31,6 +31,26 @@ IP_C02 = "192.168.0.2"
 IP_C03 = "192.168.0.3"
 IP_C04 = "192.168.0.4"
 
+compute01_vcpu_total = 32
+compute02_vcpu_total = 32
+compute03_vcpu_total = 32
+compute04_vcpu_total = 32
+
+compute01_vcpu_used = 0
+compute02_vcpu_used = 0
+compute03_vcpu_used = 0
+compute04_vcpu_used = 0
+
+compute01_ram_total = 110 * 1024
+compute02_ram_total = 110 * 1024
+compute03_ram_total = 110 * 1024
+compute04_ram_total = 110 * 1024
+
+compute01_ram_used = 0
+compute02_ram_used = 0
+compute03_ram_used = 0
+compute04_ram_used = 0
+
 nova = client.Client("jvilaplana", "jvilaplana", "bigproject", "http://stormy.udl.net:5000/v2.0/", service_type="compute")
 
 
@@ -55,6 +75,9 @@ def list_hosts():
     #for host in hosts:
     #    print host.host_name
 
+def list_images():
+    return nova.images.list()
+
 def list_servers_and_host():
     servers = list_servers()
     hosts = list_hosts()
@@ -71,11 +94,105 @@ def list_servers_and_host():
                 break
         print server.name + " - " + server.hostId
 
+def test2():
+    m1_tiny = 4
+    m1_small = 8
+    m1_medium = 16
+    m1_large = 6
+    m1_xlarge = 3
+
+    flavor_tiny = nova.flavors.find(ram=512)
+    flavor_small = nova.flavors.find(ram=2048)
+    flavor_medium = nova.flavors.find(ram=4096)
+    flavor_large = nova.flavors.find(ram=8192)
+    flavor_xlarge = nova.flavors.find(ram=16384)
+
+    for x in range(0, m1_xlarge):
+        instance_name = "xlarge-" + str(x)
+        allocated = allocate_vm(instance_name, 8, 16384, flavor_xlarge)
+        print "- VM " + instance_name + " allocated in: " + allocated
+
+    for x in range(0, m1_large):
+        instance_name = "large-" + str(x)
+        allocated = allocate_vm(instance_name, 4, 8192, flavor_large)
+        print "- VM " + instance_name + " allocated in: " + allocated
+
+    for x in range(0, m1_medium):
+        instance_name = "medium-" + str(x)
+        allocated = allocate_vm(instance_name, 2, 4096, flavor_medium)
+        print "- VM " + instance_name + " allocated in: " + allocated
+
+    for x in range(0, m1_small):
+        instance_name = "small-" + str(x)
+        allocated = allocate_vm(instance_name, 1, 2048, flavor_small)
+        print "- VM " + instance_name + " allocated in: " + allocated
+    
+    for x in range(0, m1_tiny):
+        instance_name = "tiny-" + str(x)
+        allocated = allocate_vm(instance_name, 1, 512, flavor_tiny)
+        print "- VM " + instance_name + " allocated in: " + allocated
+
+    if(compute02_vcpu_used == 0):
+        print "shutting down compute02 ..."
+        shutdown_host("root", PIP_C02)
+    if(compute03_vcpu_used == 0):
+        print "shutting down compute03 ..."
+        shutdown_host("root", PIP_C03)
+    if(compute04_vcpu_used == 0):
+        print "shutting down compute04 ..."
+        shutdown_host("root", PIP_C04)
+    
+        
+    
+def allocate_vm(instance_name, vcpu, ram, flavor):
+    image = list_images()[0]
+
+    global compute01_vcpu_used
+    global compute02_vcpu_used
+    global compute03_vcpu_used
+    global compute04_vcpu_used
+    
+    global compute01_ram_used
+    global compute02_ram_used
+    global compute03_ram_used
+    global compute04_ram_used
+
+    if compute01_vcpu_used + vcpu < compute01_vcpu_total and compute01_ram_used + ram < compute01_ram_total:
+        nova.servers.create(instance_name, image=image, flavor=flavor, availability_zone="compute01", keypair="jvilaplana")
+        compute01_vcpu_used += vcpu
+        compute01_ram_used += ram
+        return "compute01"
+    elif compute02_vcpu_used + vcpu < compute02_vcpu_total and compute02_ram_used + ram < compute02_ram_total:
+        nova.servers.create(instance_name, image=image, flavor=flavor, availability_zone="compute02", keypair="jvilaplana")
+        compute02_vcpu_used += vcpu
+        compute02_ram_used += ram
+        return "compute02"
+    elif compute03_vcpu_used + vcpu < compute03_vcpu_total and compute03_ram_used + ram < compute03_ram_total:
+        nova.servers.create(instance_name, image=image, flavor=flavor, availability_zone="compute03", keypair="jvilaplana")
+        compute03_vcpu_used += vcpu
+        compute03_ram_used += ram
+        return "compute03"
+    elif compute04_vcpu_used + vcpu < compute04_vcpu_total and compute04_ram_used + ram < compute04_ram_total:
+        nova.servers.create(instance_name, image=image, flavor=flavor, availability_zone="compute04", keypair="jvilaplana")
+        compute04_vcpu_used += vcpu
+        compute04_ram_used += ram
+        return "compute04"
+    else:
+        return "error"
+
+
 def main():
+    test2()
     #startup_host(HWaddr_C02)
     #shutdown_host("root", PIP_C02)
+
+    #image = list_images()[0]
     
-    list_servers_and_host()
+    #f1 = nova.flavors.find(ram=16384)
+    #nova.servers.create("my-server1", image=image, flavor=f1, availability_zone="compute02", keypair="jvilaplana")
+    #nova.servers.create("my-server2", image=image, flavor=f1, availability_zone="compute02", keypair="jvilaplana")
+    #nova.servers.create("my-server3", image=image, flavor=f1, availability_zone="compute02", keypair="jvilaplana")
+    #nova.servers.create("my-server5", image=image, flavor=f1, availability_zone="compute02", keypair="jvilaplana")
 
     
 

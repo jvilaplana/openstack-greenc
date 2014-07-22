@@ -1,0 +1,10 @@
+[22/07/2014 10:23] start VMs test 1
+[22/07/2014 10:27] start VMs test 1 (end)
+[22/07/2014 12:04] stop VMs test 1
+[22/07/2014 13:26] start 4 VMs xlarge in c02
+[22/07/2014 14:10] start test 2
+[22/07/2014 14:18] start test 2
+[22/07/2014 14:31] start test 2
+[22/07/2014 14:44] start test 2
+[22/07/2014 14:48] start test 2 (shutting down compute04)
+[22/07/2014 14:50] end of VM spawning of previous test
