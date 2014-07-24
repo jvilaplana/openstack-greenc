@@ -14,6 +14,7 @@
 
 from novaclient.v1_1 import client
 import subprocess
+import time
 
 
 CONTROLLER_USER = "root"
@@ -181,10 +182,24 @@ def allocate_vm(instance_name, vcpu, ram, flavor):
         return "error"
 
 
+def test3():
+    image = list_images()[0]
+    flavor_tiny = nova.flavors.find(ram=512)
+
+    #nova.servers.create("prova", image=image, flavor=flavor_tiny, availability_zone="compute02", keypair="jvilaplana")
+ 
+    for i in range(38, 100):
+        instance_name = "vm-test3-" + str(i)
+        print "- Launching " + instance_name + "..."
+        nova.servers.create(instance_name, image=image, flavor=flavor_tiny, availability_zone="compute02", keypair="jvilaplana")
+        time.sleep(1)
+
 def main():
-    test2()
+    #test2()
+    test3()
+    #startup_host(HWaddr_C04)
     #startup_host(HWaddr_C02)
-    #shutdown_host("root", PIP_C02)
+    #shutdown_host("root", PIP_C04)
 
     #image = list_images()[0]
     

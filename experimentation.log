@@ -8,3 +8,12 @@
 [22/07/2014 14:44] start test 2
 [22/07/2014 14:48] start test 2 (shutting down compute04)
 [22/07/2014 14:50] end of VM spawning of previous test
+
+[24/07/2014 12:42] start test 3
+[24/07/2014 12:45] stop compute04
+[24/07/2014 12:47] start compute04 (dj jul 24 12:47:48 CEST 2014)
+[24/07/2014 12:50] compute04 fully operational (dj jul 24 12:50:25 CEST 2014) ---> 137 sec to boot.
+[24/07/2014 12:04] increase load on compute02 (1 per second, 37 in total)
+[24/07/2014 12:05] stop load
+[24/07/2014 12:10] increase load on compute02 (1 per second, 62 in total)
+[24/07/2014 12:12] stop load
