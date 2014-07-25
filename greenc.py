@@ -182,6 +182,48 @@ def allocate_vm(instance_name, vcpu, ram, flavor):
         return "error"
 
 
+def test2_default():
+    image = list_images()[0]
+    
+    m1_tiny = 4
+    m1_small = 8
+    m1_medium = 16
+    m1_large = 6
+    m1_xlarge = 3
+
+    flavor_tiny = nova.flavors.find(ram=512)
+    flavor_small = nova.flavors.find(ram=2048)
+    flavor_medium = nova.flavors.find(ram=4096)
+    flavor_large = nova.flavors.find(ram=8192)
+    flavor_xlarge = nova.flavors.find(ram=16384)
+
+    for x in range(0, m1_xlarge):
+        instance_name = "xlarge-" + str(x)
+        nova.servers.create(instance_name, image=image, flavor=flavor_xlarge, keypair="jvilaplana")
+       
+
+    for x in range(0, m1_large):
+        instance_name = "large-" + str(x)
+        nova.servers.create(instance_name, image=image, flavor=flavor_large, keypair="jvilaplana")
+        
+
+    for x in range(0, m1_medium):
+        instance_name = "medium-" + str(x)
+        nova.servers.create(instance_name, image=image, flavor=flavor_medium, keypair="jvilaplana")
+       
+
+    for x in range(0, m1_small):
+        instance_name = "small-" + str(x)
+        nova.servers.create(instance_name, image=image, flavor=flavor_small, keypair="jvilaplana")
+        
+    
+    for x in range(0, m1_tiny):
+        instance_name = "tiny-" + str(x)
+        nova.servers.create(instance_name, image=image, flavor=flavor_tiny, keypair="jvilaplana")
+ 
+
+    
+
 def test3():
     image = list_images()[0]
     flavor_tiny = nova.flavors.find(ram=512)
@@ -195,7 +237,10 @@ def test3():
         time.sleep(1)
 
 def main():
-    test2()
+    #test2()
+
+    test2_default()
+    
     #test3()
     #startup_host(HWaddr_C04)
     #startup_host(HWaddr_C02)
