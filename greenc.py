@@ -195,8 +195,8 @@ def test3():
         time.sleep(1)
 
 def main():
-    #test2()
-    test3()
+    test2()
+    #test3()
     #startup_host(HWaddr_C04)
     #startup_host(HWaddr_C02)
     #shutdown_host("root", PIP_C04)

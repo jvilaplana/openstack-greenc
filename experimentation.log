@@ -17,3 +17,5 @@
 [24/07/2014 12:05] stop load
 [24/07/2014 12:10] increase load on compute02 (1 per second, 62 in total)
 [24/07/2014 12:12] stop load
+
+[25/07/2014 09:14] start test 2

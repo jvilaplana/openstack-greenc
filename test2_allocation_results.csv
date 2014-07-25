@@ -1,0 +1,6 @@
+flavor,compute01,compute02,compute03,compute04
+m1.xlarge,3,0,0,0
+m1.large,1,5,0,0
+m1.medium,1,5,10,0
+m1.small,1,1,6,0
+m1.tiny,0,0,4
